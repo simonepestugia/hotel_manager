@@ -1,0 +1,123 @@
+swagger: "2.0"
+info:
+  description: "API per la gestione delle prenotazioni alberghiere."
+  version: "1.0.0"
+  title: "Sistema di Gestione Alberghiera"
+host: "localhost:8080"
+basePath: "/api"
+schemes:
+- "http"
+paths:
+  /ospiti:
+    get:
+      tags:
+      - "ospite"
+      summary: "Ottiene una lista di tutti gli ospiti"
+      description: "Restituisce tutti gli ospiti"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Una lista di ospiti"
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/Ospite'
+    post:
+      tags:
+      - "ospite"
+      summary: "Crea un nuovo ospite"
+      description: "Aggiunge un nuovo ospite al sistema"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Oggetto Ospite che deve essere aggiunto"
+        required: true
+        schema:
+          $ref: '#/definitions/Ospite'
+      responses:
+        201:
+          description: "Ospite creato"
+        400:
+          description: "Dati invalidi"
+  /ospiti/{ID_Ospite}:
+    get:
+      tags:
+      - "ospite"
+      summary: "Trova ospite per ID"
+      description: "Restituisce un singolo ospite"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "ID_Ospite"
+        in: "path"
+        description: "ID dell'ospite da restituire"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Ospite restituito con successo"
+          schema:
+            $ref: '#/definitions/Ospite'
+        404:
+          description: "Ospite non trovato"
+    put:
+      tags:
+      - "ospite"
+      summary: "Aggiorna un ospite esistente"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "ID_Ospite"
+        in: "path"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: '#/definitions/Ospite'
+      responses:
+        200:
+          description: "Ospite aggiornato con successo"
+        404:
+          description: "Ospite non trovato"
+    delete:
+      tags:
+      - "ospite"
+      summary: "Elimina un ospite"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "ID_Ospite"
+        in: "path"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Ospite eliminato"
+        404:
+          description: "Ospite non trovato"
+definitions:
+  Ospite:
+    type: "object"
+    required:
+    - "Nome"
+    - "Cognome"
+    - "Email"
+    properties:
+      ID_Ospite:
+        type: "integer"
+        format: "int64"
+      Nome:
+        type: "string"
+      Cognome:
+        type: "string"
+      Email:
+        type: "string"
